@@ -16,7 +16,9 @@ app.use("/api/contacts" , contactRoutes);
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("MongoDB connected"))
     .catch(err => console.log(err));
-
+app.get("/", (req, res) => {
+  res.json({ message: "Contact API working!", contacts: "/api/contacts" });
+});
 
 app.listen(3000,()=>{
     console.log("Server is Running on the port 3000");
