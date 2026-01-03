@@ -29,6 +29,7 @@ router.get("/", async (req, res) => {
 //delete 
 router.delete("/:id",async(req,res) =>{
     try {
+    const { id } = req.params;
     await Contact.findByIdAndDelete(id);
     
     res.status(200).json({ message: "Contact deleted successfully" });
