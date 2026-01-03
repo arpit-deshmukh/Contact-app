@@ -5,7 +5,7 @@ export default function ContactList({ reload , onDeleteSuccess}) {
   const [contacts, setContacts] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:3000/api/contacts")
+    axios.get("https://contact-app-backend-xq5f.onrender.com/api/contacts")
       .then(res => {
         const sorted = res.data.sort((a, b) => b._id.localeCompare(a._id));
         setContacts(sorted);
@@ -16,7 +16,7 @@ export default function ContactList({ reload , onDeleteSuccess}) {
   const handleDelete = async (id) => {
 
     try{
-      await axios.delete(`http://localhost:3000/api/contacts/${id}`);
+      await axios.delete(`https://contact-app-backend-xq5f.onrender.com/api/contacts/${id}`);
       alert("Contact Deleted Successfully");
       onDeleteSuccess();
     }catch (err) {

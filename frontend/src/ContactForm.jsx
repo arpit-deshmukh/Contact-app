@@ -19,7 +19,7 @@ export default function ContactForm({ onSuccess }) {
 
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/contacts",
+        "https://contact-app-backend-xq5f.onrender.com/api/contacts",
         formData
       );
 
