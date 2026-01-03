@@ -1,29 +1,31 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "./api/axios";
 
-export default function ContactList({ reload , onDeleteSuccess}) {
+export default function ContactList({ reload, onDeleteSuccess }) {
   const [contacts, setContacts] = useState([]);
 
   useEffect(() => {
-    axios.get("https://contact-app-backend-xq5f.onrender.com/api/contacts")
-      .then(res => {
-        const sorted = res.data.sort((a, b) => b._id.localeCompare(a._id));
+    api
+      .get("/api/contacts")
+      .then((res) => {
+        const sorted = res.data.sort((a, b) =>
+          b._id.localeCompare(a._id)
+        );
         setContacts(sorted);
       })
-      .catch(err => console.error(err));
-  }, [reload]); // reload triggers refetch
+      .catch((err) => console.error(err));
+  }, [reload]);
 
   const handleDelete = async (id) => {
-
-    try{
-      await axios.delete(`https://contact-app-backend-xq5f.onrender.com/api/contacts/${id}`);
+    try {
+      await api.delete(`/api/contacts/${id}`);
       alert("Contact Deleted Successfully");
       onDeleteSuccess();
-    }catch (err) {
-        console.error("Error deleting contact:", err);
-        alert("Failed to delete contact");
-  }
-}
+    } catch (err) {
+      console.error("Error deleting contact:", err);
+      alert("Failed to delete contact");
+    }
+  };
 
   return (
     <table border={2}>
@@ -34,6 +36,7 @@ export default function ContactList({ reload , onDeleteSuccess}) {
           <th>Email</th>
           <th>Phone</th>
           <th>Message</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -44,12 +47,14 @@ export default function ContactList({ reload , onDeleteSuccess}) {
             <td>{c.email}</td>
             <td>{c.phone}</td>
             <td>{c.message}</td>
-            <td><button onClick={()=>handleDelete(c._id)}>Delete
-              </button></td>
+            <td>
+              <button onClick={() => handleDelete(c._id)}>
+                Delete
+              </button>
+            </td>
           </tr>
         ))}
       </tbody>
     </table>
   );
-
-};
+}

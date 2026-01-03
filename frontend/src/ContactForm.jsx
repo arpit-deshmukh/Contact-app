@@ -1,5 +1,5 @@
-import axios from "axios";
 import { useState } from "react";
+import api from "./api/axios";
 
 export default function ContactForm({ onSuccess }) {
   const [formData, setFormData] = useState({
@@ -8,7 +8,8 @@ export default function ContactForm({ onSuccess }) {
     phone: "",
     message: ""
   });
-  const [message, setMessage] = useState(""); // temporary success/error message
+
+  const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,17 +19,12 @@ export default function ContactForm({ onSuccess }) {
     e.preventDefault();
 
     try {
-      const res = await axios.post(
-        "https://contact-app-backend-xq5f.onrender.com/api/contacts",
-        formData
-      );
+      const res = await api.post("/api/contacts", formData);
 
       if (res.status === 201) {
-        // show message on page instead of alert
         setMessage("Contact saved successfully!");
         setFormData({ name: "", email: "", phone: "", message: "" });
 
-        // reload the list
         onSuccess();
       }
     } catch (err) {
@@ -46,6 +42,7 @@ export default function ContactForm({ onSuccess }) {
         onChange={handleChange}
         required
       />
+
       <input
         name="email"
         placeholder="Email"
@@ -53,19 +50,23 @@ export default function ContactForm({ onSuccess }) {
         onChange={handleChange}
         required
       />
+
       <input
         name="phone"
         placeholder="Phone"
         value={formData.phone}
         onChange={handleChange}
       />
+
       <textarea
         name="message"
         placeholder="Message"
         value={formData.message}
         onChange={handleChange}
       />
+
       <button type="submit">Submit</button>
+
       {message && <p>{message}</p>}
     </form>
   );
